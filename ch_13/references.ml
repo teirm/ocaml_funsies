@@ -80,3 +80,23 @@ let sum_arr arr =
     done;
     !sum
 
+let array_rev arr = 
+    let b = ref 0 in
+    let e = ref ((Array.length arr) - 1) in
+    while !b < !e do
+        let t = arr.(!b) in
+        arr.(!b) <- arr.(!e);
+        arr.(!e) <- t;
+        b := !b + 1;
+        e := !e - 1
+   done
+
+(* using big arrays *)
+let make_table n = 
+    let table = Array.init n (fun _ -> Array.make n 0) in
+    for i = 0 to (n-1) do
+        for j = 0 to (n-1) do
+            (table.(i)).(j) <- ((i+1) * (j+1))
+        done
+    done;
+    table
