@@ -10,7 +10,7 @@ let explode s =
 let apply_guess word guess =
     let rec apply_guess_impl w res g c =
         match w with 
-            []  -> (List.rev res, c)
+            []  -> (List.rev res, c > 0)
         | x::xs -> if x = g then apply_guess_impl xs (x::res) g (c+1)
                    else apply_guess_impl xs ('_'::res) g c
     in apply_guess_impl word [] guess 0;;
@@ -41,8 +41,3 @@ let merge_lists curr res =
  * Check if a solution is complete
  *)
 let solution_complete soln = List.fold_right (fun x y -> (x != '_') && y) soln true;;
-
-(*
- * Print a list of characters for debugging purposes
- *)
-let lprint l = List.map (fun x -> Printf.printf "%c\n" x) l 
