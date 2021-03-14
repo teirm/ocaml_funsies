@@ -93,7 +93,7 @@ let output_of_buffer b =
     let pos = ref 0 in 
         { output_char = 
                 (fun c -> Buffer.add_char b c; pos := !pos + 1);
-          out_channel_lenght = (fun () -> Buffer.length b)};;
+          out_channel_length = (fun () -> Buffer.length b)};;
 
 let output_int_list o ls =
     let len = List.length ls in
