@@ -43,6 +43,11 @@ let rec at p pp s sp =
                 else if sp > String.length s - 1 then None          (* end string *)
                 else if p.[pp + 1] = s.[sp] then Some(2, swallow_all p.[pp + 1] s sp)   (* read one or more characters *)
                 else None                                           (* did not match *)
+        |   '\\' -> 
+                if pp + 1 > String.length p - 1 then None           (* end pattern *)
+                else if sp > String.length s - 1 then None          (* end string *)
+                else if p.[pp + 1] = s.[sp] then Some(2, 1)         (* read one special character *)
+                else None
         |   c ->
                 if sp < String.length s && c = s.[sp] then Some(1,1)
                 else None
@@ -51,11 +56,13 @@ let rec at p pp s sp =
     |   Some (jump_p, jump_s) -> at p (pp + jump_p) s (sp + jump_s);;   (* match success -- continue *)
 
 
-let rec search_string_inner n p s =
-    (n < String.length s || n = 0 && String.length s = 0) && 
-    (at p 0 s n || search_string_inner (n+1) p s);;
+let cond_upper s cond = if cond then String.uppercase_ascii s else s;; 
 
-let search_string = search_string_inner 0;;
+let rec search_string_inner n p s ~ic =
+    (n < String.length s || n = 0 && String.length s = 0) && 
+    (at (cond_upper p ic) 0 (cond_upper s ic) n || search_string_inner (n+1) p s ~ic:ic);;
+
+let search_string ?(ignore_case = false) = search_string_inner 0 ~ic:ignore_case;;
 
 (* exercises *)
 let rec all_matches_inner n pat str accum step =
