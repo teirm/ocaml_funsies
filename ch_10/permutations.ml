@@ -1,7 +1,5 @@
 (* permutations *)
 
-#require "more";;
-open "More";;
 
 let rec interleave acc e seen l =
     match l with
@@ -104,4 +102,46 @@ let rec tf_lists n accum=
     match n with
         0   -> [] :: accum
     |   _   -> (List.map (fun l -> true::l) (tf_lists (n-1) accum)) @ 
-               (List.map (fun l -> false::l) (tf_lists (n-1) accum));;  
+               (List.map (fun l -> false::l) (tf_lists (n-1) accum));;
+
+(* Dijkstra's Permutation Algorithm On Lists *)
+let lfirst l =
+    let rec impl l p n = 
+        match l with
+            []  -> raise (Invalid_argument "empty list")
+        |   [x] -> p 
+        | x::y::tl -> if x < y then impl (y::tl) n (n+1) else impl (y::tl) p (n+1)
+    in impl l 0 0;; 
+
+let llast lst f n = 
+    let rec impl l p curr_v =
+        match l with 
+            []  -> p + n
+        | x::tl -> if x < curr_v && x > f then impl tl (p+1) x 
+                   else impl tl p curr_v
+    in impl (Util.drop lst (n+1)) 1 (List.hd (Util.drop lst (n+1)));; 
+
+let get_value l n = List.hd (Util.drop l n);;
+
+let lswap l (f,fp) (s,sp) =
+    let rec impl n l = 
+        match l with 
+            []  -> []
+        | x::xs -> if n = fp then s::(impl (n+1) xs) 
+                   else if n == sp then f::xs
+                   else x::(impl (n+1) xs)
+    in impl 0 l;;
+
+let rec sort_from l n = 
+    match l, n with
+        [], 0 -> []
+    |   [], _ -> raise (Invalid_argument "out of bounds")
+    |   xs, 0 -> List.sort compare xs
+    |x::xs, i -> x :: sort_from xs (i-1);;
+
+let next_lperm l = 
+    let fp = lfirst l in
+    let f = get_value l fp in
+    let sp = llast l f fp  in
+    let s = get_value l sp in
+        lswap l (f,fp) (s,sp);; 
