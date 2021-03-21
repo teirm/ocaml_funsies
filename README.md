@@ -10,3 +10,7 @@ Finished the book "Ocaml from the very beginning".
 # 2021-03-12
 Wrote a small hangman game in Ocaml and reorganized directory
 to support next ocaml book.
+
+# 2021-03-21
+More or less done with More Ocaml -- good book, but lacking
+good coverage of Module and Functors.
