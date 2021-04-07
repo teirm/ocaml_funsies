@@ -14,3 +14,8 @@ to support next ocaml book.
 # 2021-03-21
 More or less done with More Ocaml -- good book, but lacking
 good coverage of Module and Functors.
+
+# 2021-04-03
+Should just start reading Real World Ocaml -- need to 
+better understand the Module and Functor systems. The ocaml
+tutorial online was rather good though.
