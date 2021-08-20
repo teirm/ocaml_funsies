@@ -29,4 +29,26 @@ let safe_hd = function
 let rec safe_tl = function 
 | []    -> None
 | x::[] -> Some x
-| _::xs -> safe_tl xs 
+| _::xs -> safe_tl xs
+
+type date = int * int * int
+
+let is_before date_1 date_2 =
+    let (y1,m1,d1) = date_1 and (y2,m2,d2) = date_2 in
+        if y1 < y2 then true 
+        else if m1 < m2 then true
+        else if d1 < d2 then true
+        else false
+
+let date_compare d1 d2 = 
+    if is_before d1 d2 then -1 
+    else if is_before d2 d1 then  1 
+    else 0
+
+let earliest = function 
+| [] -> None
+| xs -> Some (List.hd (List.rev (List.sort date_compare xs))) 
+
+type suit = Clubs | Diamonds | Hearts | Aces
+type rank = int
+type card = {suit:suit; rank:rank}
